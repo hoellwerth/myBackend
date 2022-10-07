@@ -11,3 +11,15 @@ export const UserSchema = new mongoose.Schema({
   bio: { type: String, required: false },
   status: { type: String, required: false },
 });
+
+export interface User {
+  username: string;
+  email: string;
+  password: string;
+  authority: number;
+  permissions: string[];
+  role: string;
+  token: string | null;
+  bio: string | null;
+  status: string | null;
+}
