@@ -4,6 +4,7 @@ import { AppService } from './app.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import * as dotenv from 'dotenv';
 import { ThrottlerModule } from '@nestjs/throttler';
+import { UserModule } from './user/user.module';
 
 dotenv.config({ path: 'src/environment/dev.env' });
 
@@ -14,6 +15,7 @@ dotenv.config({ path: 'src/environment/dev.env' });
       ttl: 60,
       limit: 30,
     }),
+    UserModule,
   ],
   controllers: [AppController],
   providers: [AppService],
