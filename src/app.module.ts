@@ -5,6 +5,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import * as dotenv from 'dotenv';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { UserModule } from './user/user.module';
+import { AuthModule } from './auth/auth.module';
 
 dotenv.config({ path: 'src/environment/dev.env' });
 
@@ -16,6 +17,7 @@ dotenv.config({ path: 'src/environment/dev.env' });
       limit: 30,
     }),
     UserModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
