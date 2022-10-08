@@ -1,6 +1,6 @@
 # myBackend
 
-As the name's saying, this is my personal APi for my website and other utils. 
+As the name's saying, this is my personal API for my website and other utils. 
 
 ## License
 
