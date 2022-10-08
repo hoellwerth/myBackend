@@ -2,8 +2,8 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { User } from '../models/user.model';
-import * as crypto from 'crypto';
 import { Salt } from '../models/salt.model';
+import * as crypto from 'crypto';
 
 @Injectable()
 export class UserService {
