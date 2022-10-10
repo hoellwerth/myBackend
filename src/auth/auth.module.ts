@@ -29,6 +29,12 @@ dotenv.config({
     UserStrategy,
     VerifyStrategy,
   ],
-  exports: [AuthService],
+  exports: [
+    AuthService,
+    LocalStrategy,
+    JwtStrategy,
+    UserStrategy, 
+    VerifyStrategy
+  ],
 })
 export class AuthModule {}
