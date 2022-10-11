@@ -15,6 +15,7 @@ import { UserGuard } from '../auth/guard/user.guard';
 import { PostService } from './services/post.service';
 import { SkipThrottle, Throttle, ThrottlerGuard } from '@nestjs/throttler';
 import { VerifyGuard } from '../auth/guard/verify.guard';
+import { AdminGuard } from '../auth/guard/admin.guard';
 
 @Throttle()
 @UseGuards(ThrottlerGuard)
@@ -40,7 +41,7 @@ export class PostController {
   }
 
   // POST /  (New Post)
-  @UseGuards(JwtAuthGuard, UserGuard, VerifyGuard)
+  @UseGuards(JwtAuthGuard, UserGuard, VerifyGuard, AdminGuard)
   @Post('')
   newPost(
     @Request() req,
