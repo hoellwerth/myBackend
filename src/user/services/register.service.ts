@@ -74,7 +74,6 @@ export class RegisterService {
 
     // Sending Mail
     // await this.mailService.sendUserConfirmation(newUser);
-    console.log('debug 0');
     return { success: result.id };
   }
 
