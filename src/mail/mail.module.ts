@@ -13,7 +13,7 @@ dotenv.config({
   imports: [
     MailerModule.forRoot({
       transport: {
-        host: 'mail.baumistlustig.eu',
+        host: '192.168.0.15',
         port: 8025,
         secure: false,
         auth: {
@@ -25,7 +25,7 @@ dotenv.config({
         from: '"Baumistlustig" <noreply@baumistlustig.eu>',
       },
       template: {
-        dir: join(__dirname, '../templates'),
+        dir: join(__dirname, 'templates'),
         adapter: new HandlebarsAdapter(),
         options: {
           strict: true,

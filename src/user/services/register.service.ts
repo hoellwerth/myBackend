@@ -9,14 +9,15 @@ import { Model } from 'mongoose';
 import { User } from '../models/user.model';
 import { UserService } from './user.service';
 import { Salt } from '../models/salt.model';
-// import { MailService } from '../../mail/services/mail.service';
+import { MailService } from '../../mail/services/mail.service';
 
 @Injectable()
 export class RegisterService {
   constructor(
     @InjectModel('User') private readonly userModel: Model<User>,
     @InjectModel('Salt') private readonly saltModel: Model<Salt>,
-    private userService: UserService, //private mailService: MailService,
+    private readonly userService: UserService,
+    private readonly mailService: MailService,
   ) {}
 
   async register(
@@ -73,7 +74,7 @@ export class RegisterService {
     await newSalt.save();
 
     // Sending Mail
-    // await this.mailService.sendUserConfirmation(newUser);
+    await this.mailService.sendUserConfirmation(newUser);
     return { success: result.id };
   }
 

@@ -4,12 +4,14 @@ import { Model } from 'mongoose';
 import { User } from '../models/user.model';
 import { Salt } from '../models/salt.model';
 import * as crypto from 'crypto';
+import { MailService } from '../../mail/services/mail.service';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectModel('User') private readonly userModel: Model<User>,
     @InjectModel('Salt') private readonly saltModel: Model<Salt>,
+    private readonly mailService: MailService,
   ) {}
 
   async getUserById(user_id: string): Promise<any> {
@@ -103,7 +105,7 @@ export class UserService {
 
     user.save();
 
-    // await this.mailService.sendForgetPassword(user, token);
+    await this.mailService.sendForgetPassword(user, token);
 
     return { user: user.username };
   }
@@ -123,7 +125,7 @@ export class UserService {
 
     user.save();
 
-    // await this.mailService.sendPasswordInfo(user);
+    await this.mailService.sendPasswordInfo(user);
 
     return user;
   }
