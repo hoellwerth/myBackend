@@ -8,6 +8,8 @@ import { LocalStrategy } from './strategy/local.strategy';
 import * as dotenv from 'dotenv';
 import { UserStrategy } from './strategy/user.strategy';
 import { VerifyStrategy } from './strategy/verify.strategy';
+import { AdminStrategy } from './strategy/admin.strategy';
+import { MailModule } from '../mail/mail.module';
 
 dotenv.config({
   path: 'src/environment/dev.env',
@@ -21,6 +23,7 @@ dotenv.config({
       secret: process.env.JWT_SECRET,
       signOptions: { expiresIn: '7d' },
     }),
+    MailModule,
   ],
   providers: [
     AuthService,
@@ -28,7 +31,15 @@ dotenv.config({
     JwtStrategy,
     UserStrategy,
     VerifyStrategy,
+    AdminStrategy,
   ],
-  exports: [AuthService],
+  exports: [
+    AuthService,
+    LocalStrategy,
+    JwtStrategy,
+    UserStrategy,
+    VerifyStrategy,
+    AdminStrategy,
+  ],
 })
 export class AuthModule {}

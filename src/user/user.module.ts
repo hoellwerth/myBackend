@@ -10,6 +10,7 @@ import { VerifyStrategy } from '../auth/strategy/verify.strategy';
 import { UserStrategy } from '../auth/strategy/user.strategy';
 import { APP_GUARD } from '@nestjs/core';
 import { ThrottlerGuard } from '@nestjs/throttler';
+import { MailModule } from '../mail/mail.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { ThrottlerGuard } from '@nestjs/throttler';
       { name: 'User', schema: UserSchema },
       { name: 'Salt', schema: SaltSchema },
     ]),
+    MailModule,
   ],
   controllers: [UserController],
   providers: [

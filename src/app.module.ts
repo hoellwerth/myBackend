@@ -6,6 +6,8 @@ import * as dotenv from 'dotenv';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
+import { PostModule } from './post/post.module';
+import { MailModule } from './mail/mail.module';
 
 dotenv.config({ path: 'src/environment/dev.env' });
 
@@ -18,6 +20,8 @@ dotenv.config({ path: 'src/environment/dev.env' });
     }),
     UserModule,
     AuthModule,
+    PostModule,
+    MailModule,
   ],
   controllers: [AppController],
   providers: [AppService],
