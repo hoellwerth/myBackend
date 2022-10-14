@@ -8,6 +8,7 @@ import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { PostModule } from './post/post.module';
 import { MailModule } from './mail/mail.module';
+import { CommentModule } from './comment/comment.module';
 
 dotenv.config({ path: 'src/environment/dev.env' });
 
@@ -22,6 +23,7 @@ dotenv.config({ path: 'src/environment/dev.env' });
     AuthModule,
     PostModule,
     MailModule,
+    CommentModule,
   ],
   controllers: [AppController],
   providers: [AppService],
