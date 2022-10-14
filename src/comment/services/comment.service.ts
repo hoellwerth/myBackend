@@ -1,4 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Post } from '../../post/models/post.model';
 import { Model } from 'mongoose';
@@ -45,5 +50,42 @@ export class CommentService {
 
     post.save();
     return comment;
+  }
+
+  // Edit comments
+  async editComment(
+    userId: string,
+    commentId: string,
+    title: string,
+    content: string,
+  ): Promise<object> {
+    if (!commentId || !userId || !title || !content) {
+      throw new BadRequestException('Wrong Body');
+    }
+
+    if (
+      commentId.length !== 24 ||
+      userId.length !== 24 ||
+      title.length > 24 ||
+      content.length > 32768
+    ) {
+      throw new BadRequestException('Body too long');
+    }
+
+    const comment: any = await this.getCommentById(commentId);
+
+    if (!comment) {
+      throw new NotFoundException('user_not_found');
+    }
+
+    if (comment.authorId !== userId) {
+      throw new UnauthorizedException();
+    }
+
+    comment.title = title;
+    comment.content = content;
+    comment.updated = new Date();
+
+    return await comment.save();
   }
 }

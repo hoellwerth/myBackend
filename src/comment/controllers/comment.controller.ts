@@ -6,6 +6,7 @@ import {
   Post,
   UseGuards,
   Request,
+  Patch,
 } from '@nestjs/common';
 import { Throttle, ThrottlerGuard } from '@nestjs/throttler';
 import { CommentService } from '../services/comment.service';
@@ -40,6 +41,23 @@ export class CommentController {
       title,
       content,
       parent,
+    );
+  }
+
+  // PATCH /:comment_id  (Edit Comment)
+  @UseGuards(JwtAuthGuard, UserGuard, VerifyGuard, AdminGuard)
+  @Patch(':comment_id')
+  editComment(
+    @Request() req,
+    @Param('comment_id') comment_id: string,
+    @Body('title') title: string,
+    @Body('content') content: string,
+  ): any {
+    return this.commentService.editComment(
+      req.user.id,
+      comment_id,
+      title,
+      content,
     );
   }
 }
