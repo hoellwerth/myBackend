@@ -15,12 +15,16 @@ import { JwtAuthGuard } from '../../auth/guard/jwt.guard';
 import { UserGuard } from '../../auth/guard/user.guard';
 import { VerifyGuard } from '../../auth/guard/verify.guard';
 import { AdminGuard } from '../../auth/guard/admin.guard';
+import { VoteService } from '../services/vote.service';
 
 @Throttle()
 @UseGuards(ThrottlerGuard)
 @Controller('comment')
 export class CommentController {
-  constructor(private readonly commentService: CommentService) {}
+  constructor (
+    private readonly commentService: CommentService,
+    private readonly voteService: VoteService
+  ) {}
 
   // GET /:comment_id  (Get a specific comment)
   @Get(':comment_id')
@@ -67,5 +71,16 @@ export class CommentController {
   @Delete(':comment_id')
   deleteComment(@Request() req, @Param('comment_id') comment_id: string): any {
     return this.commentService.deleteComment(req.user.id, comment_id);
+  }
+
+  // PATCH /vote (Vote for Comments)
+  @UseGuards(JwtAuthGuard, UserGuard,VerifyGuard)
+  @Patch('vote/:postId')
+  vote(
+    @Request() req,
+    @Param('postId') postId: string,
+    @Body('type') type: boolean
+  ): any {
+    return this.voteService.vote(type, postId, req.user.id);
   }
 }

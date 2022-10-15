@@ -5,6 +5,7 @@ import { PostModule } from '../post/post.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { PostSchema } from '../post/models/post.model';
 import { AuthModule } from '../auth/auth.module';
+import { VoteService } from './services/vote.service';
 
 @Module({
   imports: [
@@ -12,7 +13,7 @@ import { AuthModule } from '../auth/auth.module';
     AuthModule,
     MongooseModule.forFeature([{ name: 'Comment', schema: PostSchema }]),
   ],
-  providers: [CommentService],
+  providers: [CommentService, VoteService],
   controllers: [CommentController],
 })
 export class CommentModule {}
