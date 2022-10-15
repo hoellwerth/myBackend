@@ -7,6 +7,7 @@ import {
   UseGuards,
   Request,
   Patch,
+  Delete,
 } from '@nestjs/common';
 import { Throttle, ThrottlerGuard } from '@nestjs/throttler';
 import { CommentService } from '../services/comment.service';
@@ -28,7 +29,7 @@ export class CommentController {
   }
 
   // POST /  (New Comment)
-  @UseGuards(JwtAuthGuard, UserGuard, VerifyGuard, AdminGuard)
+  @UseGuards(JwtAuthGuard, UserGuard, VerifyGuard)
   @Post('')
   newComment(
     @Request() req,
@@ -59,5 +60,12 @@ export class CommentController {
       title,
       content,
     );
+  }
+
+  // DELETE /:comment_id  (Delete Comment)
+  @UseGuards(JwtAuthGuard, UserGuard, VerifyGuard)
+  @Delete(':comment_id')
+  deleteComment(@Request() req, @Param('comment_id') comment_id: string): any {
+    return this.commentService.deleteComment(req.user.id, comment_id);
   }
 }

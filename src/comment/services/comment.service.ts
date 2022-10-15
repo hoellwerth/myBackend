@@ -88,4 +88,44 @@ export class CommentService {
 
     return await comment.save();
   }
+
+  // Delete comments
+  async deleteComment(userId: string, commentId: string): Promise<any> {
+    if (!commentId || !userId) {
+      throw new BadRequestException('Wrong Body');
+    }
+
+    if (commentId.length !== 24 || userId.length > 24) {
+      throw new BadRequestException('Body too long');
+    }
+
+    const comment: any = await this.getCommentById(commentId);
+    if (!comment) {
+      throw new NotFoundException();
+    }
+
+    if (comment.authorId !== userId) {
+      throw new UnauthorizedException();
+    }
+
+    const result = await this.commentModel.findByIdAndDelete(commentId);
+
+    const post: any = await this.postService.getPostById(comment.parent);
+
+    console.log(post);
+    const comments = post.comments;
+
+    for (const i in comments) {
+      if (comments[i] === commentId) {
+        comments.splice(i, 1);
+        break;
+      }
+    }
+
+    post.comments = comments;
+
+    post.save();
+
+    return { success: result };
+  }
 }
