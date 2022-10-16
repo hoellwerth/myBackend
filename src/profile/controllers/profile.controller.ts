@@ -45,6 +45,7 @@ export class ProfileController {
     return this.profileService.editProfile(userId, status, bio);
   }
 
+  // POST /picture (Post a picture)
   @UseGuards(JwtAuthGuard, UserGuard, VerifyGuard)
   @Post('picture')
   @UseInterceptors(FileInterceptor('profile-picture'))
@@ -53,5 +54,13 @@ export class ProfileController {
     @Request() req: any,
   ): Promise<any> {
     return this.profileService.uploadPicture(file, req.user.id);
+  }
+
+  // GET /picture/:userId (Get a specific picture)
+  @Get('picture/:userId')
+  getPicture(@Param('userid') userId: string): any {
+    const profile: any = this.profileService.getProfile(userId);
+
+    return { buffer: profile.buffer, filename: profile.filename };
   }
 }
