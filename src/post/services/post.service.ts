@@ -97,7 +97,6 @@ export class PostService {
     authorId: string,
     title: string,
     content: string,
-    comments: string[] | null,
   ): Promise<any> {
     if (!post_id || !authorId || !title || !content) {
       throw new BadRequestException('Wrong Body');
@@ -131,10 +130,6 @@ export class PostService {
     post.title = title;
     post.content = content;
     post.updated = new Date();
-
-    if (comments) {
-      post.comments = comments;
-    }
 
     return await post.save();
   }

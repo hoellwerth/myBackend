@@ -9,14 +9,14 @@ import {
   Request,
   UseGuards,
 } from '@nestjs/common';
-import { RegisterService } from '../services/register.service';
-import { LocalAuthGuard } from '../../auth/guard/local.guard';
-import { JwtAuthGuard } from '../../auth/guard/jwt.guard';
-import { UserService } from '../services/user.service';
-import { UserGuard } from '../../auth/guard/user.guard';
+import { RegisterService } from './services/register.service';
+import { LocalAuthGuard } from '../auth/guard/local.guard';
+import { JwtAuthGuard } from '../auth/guard/jwt.guard';
+import { UserService } from './services/user.service';
+import { UserGuard } from '../auth/guard/user.guard';
 import { Throttle, ThrottlerGuard } from '@nestjs/throttler';
-import { VerifyGuard } from '../../auth/guard/verify.guard';
-import { AuthService } from '../../auth/services/auth.service';
+import { VerifyGuard } from '../auth/guard/verify.guard';
+import { AuthService } from '../auth/services/auth.service';
 
 @Throttle()
 @UseGuards(ThrottlerGuard)
