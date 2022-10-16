@@ -11,10 +11,12 @@ import { UserStrategy } from '../auth/strategy/user.strategy';
 import { APP_GUARD } from '@nestjs/core';
 import { ThrottlerGuard } from '@nestjs/throttler';
 import { MailModule } from '../mail/mail.module';
+import { ProfileModule } from '../profile/profile.module';
 
 @Module({
   imports: [
     forwardRef(() => AuthModule),
+    forwardRef(() => ProfileModule),
     MongooseModule.forFeature([
       { name: 'User', schema: UserSchema },
       { name: 'Salt', schema: SaltSchema },
