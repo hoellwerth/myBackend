@@ -31,7 +31,19 @@ export class ProfileController {
     return {
       status: profile.status,
       bio: profile.bio,
+      followers: profile.followers,
+      following: profile.following,
     };
+  }
+
+  // POST / (toggle following the user)
+  @UseGuards(JwtAuthGuard, UserGuard, VerifyGuard)
+  @Post(':targetId')
+  toggleFollow(
+    @Param('targetId') targetId: string,
+    @Request() req: any,
+  ): Promise<any> {
+    return this.profileService.toggleFollow(targetId, req.user.id);
   }
 
   // PATCH / (Edit the user's profile)

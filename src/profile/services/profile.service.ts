@@ -57,6 +57,41 @@ export class ProfileService {
     return { success: true };
   }
 
+  // toggle follow
+  async toggleFollow(targetId: string, userId: string) {
+    const targetProfile: any = await this.getProfile(targetId);
+
+    if (!targetProfile) {
+      throw new NotFoundException('Target not found!');
+    }
+
+    const profile: any = await this.getProfile(userId);
+
+    if (!profile) {
+      throw new NotFoundException('Profile not found!');
+    }
+
+    if (profile.following.includes(targetId)) {
+      profile.following = profile.following.filter((id) => id !== targetId);
+
+      targetProfile.followers = targetProfile.followers.filter(
+        (id) => id !== userId,
+      );
+      targetProfile.save();
+
+      profile.save();
+      return { success: true };
+    }
+
+    profile.following.push(targetId);
+    targetProfile.followers.push(userId);
+
+    targetProfile.save();
+    profile.save();
+
+    return { success: true };
+  }
+
   // ---- Profile Picture ---- //
 
   // Upload profile picture
