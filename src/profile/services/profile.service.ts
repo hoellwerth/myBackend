@@ -13,6 +13,10 @@ export class ProfileService {
     @InjectModel('Profile') private readonly profileModel: Model<Profile>,
   ) {}
 
+  async getProfile(userId: string): Promise<any> {
+    return this.profileModel.findOne({ userId });
+  }
+
   async createProfile(userId: string): Promise<any> {
     const newProfile = new this.profileModel({
       userId: userId,
@@ -38,7 +42,7 @@ export class ProfileService {
       throw new BadRequestException('Bio too long!');
     }
 
-    const profile: any = (await this.profileModel.find({ userId }))[0];
+    const profile: any = await this.profileModel.findOne({ userId });
 
     if (!profile) {
       throw new NotFoundException('Profile not found!');
