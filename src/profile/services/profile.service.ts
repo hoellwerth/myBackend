@@ -6,12 +6,17 @@ import {
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Profile } from '../models/profile.model';
+import * as fs from 'fs';
 
 @Injectable()
 export class ProfileService {
   constructor(
     @InjectModel('Profile') private readonly profileModel: Model<Profile>,
   ) {}
+
+  async getProfile(userId: string): Promise<any> {
+    return this.profileModel.findOne({ userId });
+  }
 
   async createProfile(userId: string): Promise<any> {
     const newProfile = new this.profileModel({
@@ -38,7 +43,7 @@ export class ProfileService {
       throw new BadRequestException('Bio too long!');
     }
 
-    const profile: any = (await this.profileModel.find({ userId }))[0];
+    const profile: any = await this.profileModel.findOne({ userId });
 
     if (!profile) {
       throw new NotFoundException('Profile not found!');
@@ -50,5 +55,31 @@ export class ProfileService {
     profile.save();
 
     return { success: true };
+  }
+
+  // ---- Profile Picture ---- //
+
+  // Upload profile picture
+  async uploadPicture(filename: string, userId: string): Promise<any> {
+    // Get file from cache
+    const file = fs.readFileSync(`./src/profile/cache/${filename}`);
+
+    // Delete file from cache
+    fs.unlink(`./src/profile/cache/${filename}`, (err) => {
+      return err;
+    });
+
+    // get profile
+    const profile = await this.getProfile(userId);
+
+    // modify profile
+    if (profile) {
+      profile.buffer = file;
+      profile.filename = filename;
+
+      const result = await profile.save();
+
+      return { modified: result.id };
+    }
   }
 }
