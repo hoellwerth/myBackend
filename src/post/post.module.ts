@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { PostController } from './controllers/post.controller';
+import { PostController } from './post.controller';
 import { MongooseModule } from '@nestjs/mongoose';
 import { PostSchema } from './models/post.model';
 import { PostService } from './services/post.service';
@@ -15,6 +15,5 @@ import { VoteService } from './services/vote.service';
   ],
   providers: [PostService, VoteService],
   controllers: [PostController],
-  exports: [PostService],
 })
 export class PostModule {}

@@ -4,7 +4,9 @@ import { AdminStrategy } from '../strategy/admin.strategy';
 
 @Injectable()
 export class AdminGuard implements CanActivate {
-  constructor(private readonly adminStrategy: AdminStrategy) {}
+  
+  constructor(private readonly adminStrategy: AdminStrategy) {
+  }
   canActivate(
     context: ExecutionContext,
   ): boolean | Promise<boolean> | Observable<boolean> {

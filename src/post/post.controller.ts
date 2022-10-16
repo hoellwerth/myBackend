@@ -9,13 +9,13 @@ import {
   Request,
   UseGuards,
 } from '@nestjs/common';
-import { JwtAuthGuard } from '../../auth/guard/jwt.guard';
-import { VoteService } from '../services/vote.service';
-import { UserGuard } from '../../auth/guard/user.guard';
-import { PostService } from '../services/post.service';
+import { JwtAuthGuard } from '../auth/guard/jwt.guard';
+import { VoteService } from './services/vote.service';
+import { UserGuard } from '../auth/guard/user.guard';
+import { PostService } from './services/post.service';
 import { SkipThrottle, Throttle, ThrottlerGuard } from '@nestjs/throttler';
-import { VerifyGuard } from '../../auth/guard/verify.guard';
-import { AdminGuard } from '../../auth/guard/admin.guard';
+import { VerifyGuard } from '../auth/guard/verify.guard';
+import { AdminGuard } from '../auth/guard/admin.guard';
 
 @Throttle()
 @UseGuards(ThrottlerGuard)
@@ -71,13 +71,7 @@ export class PostController {
     @Body('content') content,
     @Request() req,
   ): any {
-    return this.postService.editPost(
-      post_id,
-      req.user.id,
-      title,
-      content,
-      null,
-    );
+    return this.postService.editPost(post_id, req.user.id, title, content);
   }
 
   // DELETE /:post_od (Delete A post)

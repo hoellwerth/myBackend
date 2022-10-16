@@ -10,7 +10,6 @@ import { User } from '../models/user.model';
 import { UserService } from './user.service';
 import { Salt } from '../models/salt.model';
 import { MailService } from '../../mail/services/mail.service';
-import { ProfileService } from '../../profile/services/profile.service';
 
 @Injectable()
 export class RegisterService {
@@ -19,7 +18,6 @@ export class RegisterService {
     @InjectModel('Salt') private readonly saltModel: Model<Salt>,
     private readonly userService: UserService,
     private readonly mailService: MailService,
-    private readonly profileService: ProfileService,
   ) {}
 
   async register(
@@ -77,9 +75,6 @@ export class RegisterService {
 
     // Sending Mail
     await this.mailService.sendUserConfirmation(newUser);
-
-    // Create profile
-    await this.profileService.createProfile(result.id);
     return { success: result.id };
   }
 
