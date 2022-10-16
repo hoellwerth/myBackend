@@ -9,6 +9,7 @@ export const PostSchema = new mongoose.Schema({
   created: { type: Date, required: true },
   updated: { type: Date || null },
   comments: { type: Array, required: false },
+  parent: { type: String, required: false },
 });
 
 export interface Post {
@@ -20,4 +21,5 @@ export interface Post {
   created: Date;
   updated: Date | null;
   comments: string[] | null;
+  parent: string;
 }

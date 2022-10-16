@@ -5,11 +5,11 @@ import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 import { JwtStrategy } from './strategy/jwt.strategy';
 import { LocalStrategy } from './strategy/local.strategy';
-import * as dotenv from 'dotenv';
 import { UserStrategy } from './strategy/user.strategy';
 import { VerifyStrategy } from './strategy/verify.strategy';
 import { AdminStrategy } from './strategy/admin.strategy';
 import { MailModule } from '../mail/mail.module';
+import * as dotenv from 'dotenv';
 
 dotenv.config({
   path: 'src/environment/dev.env',

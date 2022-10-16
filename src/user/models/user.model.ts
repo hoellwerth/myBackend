@@ -8,8 +8,6 @@ export const UserSchema = new mongoose.Schema({
   permissions: { type: Array, required: true },
   role: { type: String || Object, required: true },
   token: { type: String, required: false },
-  bio: { type: String, required: false },
-  status: { type: String, required: false },
 });
 
 export interface User {
@@ -20,6 +18,4 @@ export interface User {
   permissions: string[];
   role: string;
   token: string | null;
-  bio: string | null;
-  status: string | null;
 }

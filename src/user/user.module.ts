@@ -1,5 +1,5 @@
 import { forwardRef, Module } from '@nestjs/common';
-import { UserController } from './user.controller';
+import { UserController } from './controllers/user.controller';
 import { UserService } from './services/user.service';
 import { RegisterService } from './services/register.service';
 import { UserSchema } from './models/user.model';
@@ -11,10 +11,12 @@ import { UserStrategy } from '../auth/strategy/user.strategy';
 import { APP_GUARD } from '@nestjs/core';
 import { ThrottlerGuard } from '@nestjs/throttler';
 import { MailModule } from '../mail/mail.module';
+import { ProfileModule } from '../profile/profile.module';
 
 @Module({
   imports: [
     forwardRef(() => AuthModule),
+    forwardRef(() => ProfileModule),
     MongooseModule.forFeature([
       { name: 'User', schema: UserSchema },
       { name: 'Salt', schema: SaltSchema },
