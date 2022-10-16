@@ -14,16 +14,15 @@ import { CommentService } from '../services/comment.service';
 import { JwtAuthGuard } from '../../auth/guard/jwt.guard';
 import { UserGuard } from '../../auth/guard/user.guard';
 import { VerifyGuard } from '../../auth/guard/verify.guard';
-import { AdminGuard } from '../../auth/guard/admin.guard';
 import { VoteService } from '../services/vote.service';
 
 @Throttle()
 @UseGuards(ThrottlerGuard)
 @Controller('comment')
 export class CommentController {
-  constructor (
+  constructor(
     private readonly commentService: CommentService,
-    private readonly voteService: VoteService
+    private readonly voteService: VoteService,
   ) {}
 
   // GET /:comment_id  (Get a specific comment)
@@ -32,7 +31,7 @@ export class CommentController {
     return this.commentService.getCommentById(comment_id);
   }
 
-  // POST /  (New Comment)
+  // POST / (New Comment)
   @UseGuards(JwtAuthGuard, UserGuard, VerifyGuard)
   @Post('')
   newComment(
@@ -50,7 +49,7 @@ export class CommentController {
   }
 
   // PATCH /:comment_id  (Edit Comment)
-  @UseGuards(JwtAuthGuard, UserGuard, VerifyGuard, AdminGuard)
+  @UseGuards(JwtAuthGuard, UserGuard, VerifyGuard)
   @Patch(':comment_id')
   editComment(
     @Request() req,
@@ -74,12 +73,12 @@ export class CommentController {
   }
 
   // PATCH /vote (Vote for Comments)
-  @UseGuards(JwtAuthGuard, UserGuard,VerifyGuard)
+  @UseGuards(JwtAuthGuard, UserGuard, VerifyGuard)
   @Patch('vote/:postId')
   vote(
     @Request() req,
     @Param('postId') postId: string,
-    @Body('type') type: boolean
+    @Body('type') type: boolean,
   ): any {
     return this.voteService.vote(type, postId, req.user.id);
   }
