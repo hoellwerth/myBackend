@@ -7,6 +7,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Profile } from '../models/profile.model';
 import * as fs from 'fs';
+import * as path from 'path';
 
 @Injectable()
 export class ProfileService {
@@ -116,5 +117,33 @@ export class ProfileService {
 
       return { modified: result.id };
     }
+  }
+
+  async getProfileImage(userId: string): Promise<any> {
+    const directory = 'src/profile/cache';
+
+    fs.readdir(directory, (err, files) => {
+      if (err) throw err;
+
+      for (const file of files) {
+        fs.unlink(path.join(directory, file), (err) => {
+          if (err) throw err;
+        });
+      }
+    });
+
+    const profile = await this.getProfile(userId);
+
+    if (!profile) {
+      throw new NotFoundException('Image not found!');
+    }
+    const img = profile.buffer.toString('base64');
+
+    const data = img.replace(/^data:image\/\w+;base64,/, '');
+    const buf = Buffer.from(data, 'base64');
+
+    fs.writeFileSync(`./src/profile/cache/${profile.filename}`, buf);
+
+    return profile.filename;
   }
 }

@@ -15,7 +15,7 @@ dotenv.config({ path: 'src/environment/dev.env' });
 
 @Module({
   imports: [
-    MongooseModule.forRoot(process.env.DB_URL, { dbName: 'test' }),
+    MongooseModule.forRoot(process.env.DB_URL, { dbName: process.env.DB_NAME }),
     ThrottlerModule.forRoot({
       ttl: 60,
       limit: 30,

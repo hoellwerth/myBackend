@@ -9,6 +9,7 @@ import {
   UseInterceptors,
   Request,
   Get,
+  Res,
 } from '@nestjs/common';
 import { Throttle, ThrottlerGuard } from '@nestjs/throttler';
 import { ProfileService } from '../services/profile.service';
@@ -17,6 +18,9 @@ import { UserGuard } from '../../auth/guard/user.guard';
 import { VerifyGuard } from '../../auth/guard/verify.guard';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { SharpPipe } from '../pipes/sharp.pipe';
+import { Response } from 'express';
+import { createReadStream } from 'fs';
+import { join } from 'path';
 
 @Throttle()
 @UseGuards(ThrottlerGuard)
@@ -36,9 +40,9 @@ export class ProfileController {
     };
   }
 
-  // POST / (toggle following the user)
+  // POST follow/ (toggle following the user)
   @UseGuards(JwtAuthGuard, UserGuard, VerifyGuard)
-  @Post(':targetId')
+  @Post('follow/:targetId')
   toggleFollow(
     @Param('targetId') targetId: string,
     @Request() req: any,
@@ -62,7 +66,7 @@ export class ProfileController {
   @Post('picture')
   @UseInterceptors(FileInterceptor('profile-picture'))
   uploadFile(
-    @UploadedFile(SharpPipe) file: string,
+    @UploadedFile(SharpPipe) file: any,
     @Request() req: any,
   ): Promise<any> {
     return this.profileService.uploadPicture(file, req.user.id);
@@ -70,9 +74,16 @@ export class ProfileController {
 
   // GET /picture/:userId (Get a specific picture)
   @Get('picture/:userId')
-  getPicture(@Param('userid') userId: string): any {
-    const profile: any = this.profileService.getProfile(userId);
+  async getPicture(
+    @Param('userId') userId: string,
+    @Res() res: Response,
+  ): Promise<any> {
+    const filename = await this.profileService.getProfileImage(userId);
 
-    return { buffer: profile.buffer, filename: profile.filename };
+    const image = await createReadStream(
+      join(process.cwd(), `src/profile/cache/${filename}`),
+    );
+
+    await image.pipe(res);
   }
 }
