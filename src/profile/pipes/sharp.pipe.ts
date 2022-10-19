@@ -1,4 +1,4 @@
-import { Injectable, PipeTransform } from '@nestjs/common';
+import { BadRequestException, Injectable, PipeTransform } from '@nestjs/common';
 import * as path from 'path';
 import * as sharp from 'sharp';
 
@@ -7,6 +7,9 @@ export class SharpPipe
   implements PipeTransform<Express.Multer.File, Promise<string>>
 {
   async transform(image: Express.Multer.File): Promise<string> {
+    if (!image) {
+      throw new BadRequestException('No image uploaded!');
+    }
     const originalName = path.parse(image.originalname).name;
     const filename = Date.now() + '-' + originalName + '.webp';
 
