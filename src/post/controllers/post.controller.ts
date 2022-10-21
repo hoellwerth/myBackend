@@ -66,23 +66,17 @@ export class PostController {
   @UseGuards(JwtAuthGuard, UserGuard, VerifyGuard)
   @Patch('')
   editPost(
-    @Body('post_id') post_id,
+    @Body('postId') postId,
     @Body('title') title,
     @Body('content') content,
     @Request() req,
   ): any {
-    return this.postService.editPost(
-      post_id,
-      req.user.id,
-      title,
-      content,
-      null,
-    );
+    return this.postService.editPost(postId, req.user.id, title, content, null);
   }
 
   // DELETE /:post_od (Delete A post)
   @UseGuards(JwtAuthGuard, UserGuard, VerifyGuard)
-  @Delete('post_id')
+  @Delete(':post_id')
   deletePost(@Param('post_id') post_id: string, @Request() req): any {
     return this.postService.deletePost(post_id, req.user.id);
   }
