@@ -115,17 +115,11 @@ export class PostService {
     const post = await this.getPostById(post_id);
 
     if (!post) {
-      throw new NotFoundException('user_not_found');
+      throw new NotFoundException('Post not found!');
     }
 
     if (post.authorId !== authorId) {
       throw new UnauthorizedException();
-    }
-
-    const checkNewPost = await this.createPost(authorId, title, content);
-
-    if (typeof checkNewPost.success === 'string') {
-      return { error: 'post_already_exists' };
     }
 
     post.title = title;
