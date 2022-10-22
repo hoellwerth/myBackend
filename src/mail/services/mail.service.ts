@@ -17,7 +17,7 @@ export class MailService {
     await this.mailerService.sendMail({
       to: user.email,
       subject: 'Welcome to Baumistlustig! Confirm your Email',
-      template: './confirmation.hbs',
+      template: './transaction.hbs',
       context: {
         name: user.username,
         url,
@@ -29,7 +29,7 @@ export class MailService {
     await this.mailerService.sendMail({
       to: user.email,
       subject: 'Login to your Baumistlustig account',
-      template: './information.hbs',
+      template: './promotional.hbs',
       context: {
         name: user.username,
       },
