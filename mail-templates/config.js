@@ -11,6 +11,9 @@
 
 module.exports = {
   build: {
+    browsersync: {
+      port: 1337,
+    },
     templates: {
       source: 'src/templates',
       destination: {
@@ -22,4 +25,4 @@ module.exports = {
       },
     },
   },
-}
+};
