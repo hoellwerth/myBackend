@@ -29,9 +29,10 @@ export class MailService {
     await this.mailerService.sendMail({
       to: user.email,
       subject: 'Login to your Baumistlustig account',
-      template: './promotional.hbs',
+      template: './information.hbs',
       context: {
         name: user.username,
+        token: undefined,
       },
     });
   }
