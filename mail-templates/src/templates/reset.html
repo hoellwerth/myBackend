@@ -1,6 +1,6 @@
 ---
-title: "Login to your Baumistlustig account"
-preheader: "Please confirm your email address in order to activate your account"
+title: "Confirm reset your password"
+preheader: "Please confirm the reset of your password"
 bodyClass: bg-slate-50
 ---
 
@@ -23,20 +23,20 @@ bodyClass: bg-slate-50
                         Hello, @{{ name }}!
                       </p>
                       <p class="text-2xl sm:leading-8 text-black font-semibold m-0 mb-6">
-                        Someone logged into your Baumistlustig account from a new device.
+                        Please confirm the reset of your password
                       </p>
                       <p class="m-0 mb-6">
-                        Please confirm that it was really you by clicking the button below.
+                        We've received a request to reset your password, confirm it by clicking the button below.
                       </p>
                       <div class="leading-full">
                         <a
-                          href="https://baumistlustig.eu/confirm/@{{ token }}"
+                          href="@{{ url }}"
                           class="inline-block py-3.5 px-4 rounded text-base font-semibold text-center [text-decoration:none] text-white bg-indigo-700 hover:bg-indigo-500"
                         >
                           <outlook>
                             <i class="tracking-6 -mso-font-width-full mso-text-raise-7.5">&#8202;</i>
                           </outlook>
-                          <span class="mso-text-raise-4">Confirm login &rarr;</span>
+                          <span class="mso-text-raise-4">Confirm request &rarr;</span>
                           <outlook>
                             <i class="tracking-6 -mso-font-width-full">&#8202;</i>
                           </outlook>
@@ -50,7 +50,7 @@ bodyClass: bg-slate-50
                         </tr>
                       </table>
                       <p class="m-0 mb-4">
-                        If you didn't try to log in, please change your password immediately.
+                        If you didn't make this request, you can safely ignore this email.
                       </p>
                     </td>
                   </tr>
