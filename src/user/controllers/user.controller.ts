@@ -78,6 +78,20 @@ export class UserController {
     };
   }
 
+  // GET /name/:username
+  @Get('name/:username')
+  async getUserByName(@Param('username') username: string): Promise<any> {
+    const user = await this.userService.getUserByName(username);
+
+    return {
+      id: user._id,
+      username: user.username,
+      email: user.email,
+      role: user.role,
+      bio: user.bio,
+      status: user.status,
+    };
+  }
   // GET /getuser/:user_id
   @Get('getuser/:user_id')
   async getUserById(@Param('user_id') user_id: string): Promise<any> {

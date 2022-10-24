@@ -40,3 +40,7 @@ src/environment/prod.env
 
 # cache
 src/profile/cache
+
+# mail
+mail-templates/build_local
+mail-templates/node_modules
