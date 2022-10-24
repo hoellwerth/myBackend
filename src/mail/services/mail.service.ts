@@ -32,6 +32,7 @@ export class MailService {
       template: './information.hbs',
       context: {
         name: user.username,
+        token: undefined,
       },
     });
   }
@@ -42,7 +43,7 @@ export class MailService {
     await this.mailerService.sendMail({
       to: user.email,
       subject: 'Password Reset Request',
-      template: './password.hbs',
+      template: './reset.hbs',
       context: {
         url,
         name: user.username,

@@ -29,9 +29,9 @@ export class ProfileController {
   constructor(private readonly profileService: ProfileService) {}
 
   // GET /:userId (Get user's profile)
-  @Get('userId')
-  getProfile(@Param('userId') userId: string): any {
-    const profile: any = this.profileService.getProfile(userId);
+  @Get('get/:userId')
+  async getProfile(@Param('userId') userId: string): Promise<any> {
+    const profile: any = await this.profileService.getProfile(userId);
     return {
       status: profile.status,
       bio: profile.bio,
