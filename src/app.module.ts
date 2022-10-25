@@ -10,6 +10,7 @@ import { PostModule } from './post/post.module';
 import { MailModule } from './mail/mail.module';
 import { CommentModule } from './comment/comment.module';
 import { ProfileModule } from './profile/profile.module';
+import { FileModule } from './file/file.module';
 
 dotenv.config({ path: 'src/environment/dev.env' });
 
@@ -26,6 +27,7 @@ dotenv.config({ path: 'src/environment/dev.env' });
     MailModule,
     CommentModule,
     ProfileModule,
+    FileModule,
   ],
   controllers: [AppController],
   providers: [AppService],
