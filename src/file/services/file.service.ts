@@ -2,6 +2,7 @@ import {
   BadRequestException,
   Injectable,
   NotFoundException,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { File } from '../models/file.model';
@@ -78,5 +79,23 @@ export class FileService {
     }
 
     return images;
+  }
+
+  async deleteFile(fileId: string, userId: string): Promise<any> {
+    const file = await this.fileModel.findById(fileId);
+
+    if (!file) {
+      throw new NotFoundException('File not found!');
+    }
+
+    if (file.userId !== userId) {
+      throw new UnauthorizedException(
+        'You are not authorized to delete this file!',
+      );
+    }
+
+    await this.fileModel.deleteOne({ _id: fileId });
+
+    return { deleted: fileId };
   }
 }

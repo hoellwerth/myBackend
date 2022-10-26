@@ -8,6 +8,7 @@ import {
   Get,
   Response,
   Param,
+  Delete,
 } from '@nestjs/common';
 import { JwtAuthGuard } from '../../auth/guard/jwt.guard';
 import { UserGuard } from '../../auth/guard/user.guard';
@@ -32,14 +33,8 @@ export class FileController {
     return this.fileService.uploadFile(file, req.user.id);
   }
 
-  // GET /file/:fileId (Get a file)
-  @Get('file/:fileId')
-  async getFile(@Param('fileId') fileId: string): Promise<any> {
-    return this.fileService.getFile(fileId);
-  }
-
   // GET /image/:imageId (Get a file)
-  @Get('image/:imageId')
+  @Get(':imageId')
   async getImage(
     @Param('imageId') imageId: string,
     @Response() res,
@@ -54,8 +49,19 @@ export class FileController {
   }
 
   // GET / (Get all files)
+  @UseGuards(JwtAuthGuard, UserGuard, VerifyGuard)
   @Get()
   async getFiles(@Request() req: any): Promise<any> {
     return this.fileService.getFiles(req.user.id);
+  }
+
+  // DELETE /:fileId (Delete a file)
+  @UseGuards(JwtAuthGuard, UserGuard, VerifyGuard)
+  @Delete(':fileId')
+  async deleteFile(
+    @Param('fileId') fileId: string,
+    @Request() req: any,
+  ): Promise<any> {
+    return this.fileService.deleteFile(fileId, req.user.id);
   }
 }
