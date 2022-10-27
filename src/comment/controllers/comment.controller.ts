@@ -8,6 +8,7 @@ import {
   Request,
   Patch,
   Delete,
+  Put,
 } from '@nestjs/common';
 import { Throttle, ThrottlerGuard } from '@nestjs/throttler';
 import { CommentService } from '../services/comment.service';
@@ -72,9 +73,9 @@ export class CommentController {
     return this.commentService.deleteComment(req.user.id, comment_id);
   }
 
-  // PATCH /vote (Vote for Comments)
+  // PUT /:postId (Vote for Comments)
   @UseGuards(JwtAuthGuard, UserGuard, VerifyGuard)
-  @Patch('vote/:postId')
+  @Put(':postId')
   vote(
     @Request() req,
     @Param('postId') postId: string,

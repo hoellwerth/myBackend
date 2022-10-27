@@ -29,7 +29,7 @@ export class ProfileController {
   constructor(private readonly profileService: ProfileService) {}
 
   // GET /:userId (Get user's profile)
-  @Get('get/:userId')
+  @Get(':userId')
   async getProfile(@Param('userId') userId: string): Promise<any> {
     const profile: any = await this.profileService.getProfile(userId);
     return {
@@ -40,7 +40,7 @@ export class ProfileController {
     };
   }
 
-  // POST follow/ (toggle following the user)
+  // POST /follow/:targetId (toggle following the user)
   @UseGuards(JwtAuthGuard, UserGuard, VerifyGuard)
   @Post('follow/:targetId')
   toggleFollow(
@@ -50,7 +50,7 @@ export class ProfileController {
     return this.profileService.toggleFollow(targetId, req.user.id);
   }
 
-  // PATCH / (Edit the user's profile)
+  // PATCH /:userId (Edit the user's profile)
   @UseGuards(JwtAuthGuard, UserGuard, VerifyGuard)
   @Patch(':userId')
   editStatus(

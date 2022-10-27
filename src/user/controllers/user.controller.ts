@@ -28,7 +28,7 @@ export class UserController {
     private readonly userService: UserService,
   ) {}
 
-  // POST /register
+  // POST /register (Register a new user)
   @Post('register')
   register(
     @Body('username') username: string,
@@ -38,7 +38,7 @@ export class UserController {
     return this.registerService.register(username, password, email);
   }
 
-  // POST /login
+  // POST /login (Login user)
   @UseGuards(LocalAuthGuard, VerifyGuard)
   @Post('login')
   async login(@Request() req: any): Promise<any> {
@@ -52,9 +52,9 @@ export class UserController {
     };
   }
 
-  // PATCH /edit
+  // PATCH / (Edit user)
   @UseGuards(JwtAuthGuard, UserGuard, VerifyGuard)
-  @Patch('edit')
+  @Patch('')
   edit(
     @Request() req: any,
     @Body('new_password') new_password: string,
@@ -63,7 +63,7 @@ export class UserController {
     return this.userService.editUser(req.user.id, new_password, new_username);
   }
 
-  // GET /get
+  // GET /get (Get current user
   @UseGuards(JwtAuthGuard, UserGuard, VerifyGuard)
   @Get('get')
   async getUser(@Request() req: any): Promise<any> {
@@ -106,7 +106,7 @@ export class UserController {
     };
   }
 
-  // DELETE /
+  // DELETE / (Delete current user)
   @UseGuards(JwtAuthGuard, UserGuard, VerifyGuard)
   @Delete('')
   async deleteUser(@Request() req: any) {
