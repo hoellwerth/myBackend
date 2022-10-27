@@ -33,13 +33,13 @@ export class FileController {
     return this.fileService.uploadFile(file, req.user.id);
   }
 
-  // GET /image/:imageId (Get a file)
+  // GET /image/:imageId (Get an image)
   @Get(':imageId')
   async getImage(
     @Param('imageId') imageId: string,
     @Response() res,
   ): Promise<any> {
-    const filename = await this.fileService.getProfileImage(imageId);
+    const filename = await this.fileService.getImage(imageId);
 
     const image = await createReadStream(
       join(process.cwd(), `src/file/cache/${filename}`),
@@ -48,7 +48,7 @@ export class FileController {
     await image.pipe(res);
   }
 
-  // GET / (Get all files)
+  // GET / (Get all file-ids)
   @UseGuards(JwtAuthGuard, UserGuard, VerifyGuard)
   @Get()
   async getFiles(@Request() req: any): Promise<any> {

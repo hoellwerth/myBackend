@@ -41,7 +41,9 @@ export class FileService {
     return this.fileModel.findById(fileId);
   }
 
-  async getProfileImage(pictureId: string): Promise<any> {
+  // Get an image
+  async getImage(pictureId: string): Promise<any> {
+    // Clear current cache
     const directory = 'src/file/cache';
 
     fs.readdir(directory, (err, files) => {
@@ -54,21 +56,23 @@ export class FileService {
       }
     });
 
-    const profile = await this.getFile(pictureId);
+    // Get image from database
+    const file = await this.getFile(pictureId);
 
-    if (!profile) {
+    if (!file) {
       throw new NotFoundException('Image not found!');
     }
-    const img = profile.buffer.toString('base64');
+    const img = file.buffer.toString('base64');
 
     const data = img.replace(/^data:image\/\w+;base64,/, '');
     const buf = Buffer.from(data, 'base64');
 
-    fs.writeFileSync(`./${directory}/${profile.filename}`, buf);
+    fs.writeFileSync(`./${directory}/${file.filename}`, buf);
 
-    return profile.filename;
+    return file.filename;
   }
 
+  // Get all files
   async getFiles(authorId: string): Promise<any> {
     const files = await this.fileModel.find({ userId: authorId });
 
@@ -81,6 +85,7 @@ export class FileService {
     return images;
   }
 
+  // delete a file
   async deleteFile(fileId: string, userId: string): Promise<any> {
     const file = await this.fileModel.findById(fileId);
 
