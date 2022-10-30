@@ -41,7 +41,13 @@ export class AuthService {
     await this.mailService.sendUserInformation(user);
 
     // Sign JsonWebToken
-    return this.jwtService.sign(payload);
+    const token = this.jwtService.sign(payload);
+
+    return {
+      access_token: token,
+      id: user._id,
+      role: user.role,
+    };
   }
 
   hash(password) {
