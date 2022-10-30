@@ -54,7 +54,7 @@ export class PostController {
   // PUT /:postId (Up/Down-vote)
   @UseGuards(JwtAuthGuard, UserGuard, VerifyGuard)
   @Patch(':postId')
-  upvote(
+  vote(
     @Request() req,
     @Body('type') type: boolean,
     @Param('postId') postId: string,
