@@ -30,7 +30,10 @@ describe('AuthController', () => {
 
   it('should return an object containing jwt & userId', async () => {
     await controller.login({
-      user: { username: 'Johannes Höllwerth', password: 'SennaHoj08!?' },
+      user: {
+        username: 'Johannes Höllwerth',
+        password: process.env.TEST_PASSWORD,
+      },
     });
 
     expect(authServiceMock.login).toHaveBeenCalled();
