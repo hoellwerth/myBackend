@@ -5,7 +5,6 @@ import { RegisterService } from './services/register.service';
 import { UserSchema } from './models/user.model';
 import { SaltSchema } from './models/salt.model';
 import { MongooseModule } from '@nestjs/mongoose';
-import { AuthModule } from '../auth/auth.module';
 import { VerifyStrategy } from '../auth/strategy/verify.strategy';
 import { UserStrategy } from '../auth/strategy/user.strategy';
 import { APP_GUARD } from '@nestjs/core';
@@ -15,7 +14,6 @@ import { ProfileModule } from '../profile/profile.module';
 
 @Module({
   imports: [
-    forwardRef(() => AuthModule),
     forwardRef(() => ProfileModule),
     MongooseModule.forFeature([
       { name: 'User', schema: UserSchema },

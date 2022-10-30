@@ -34,7 +34,6 @@ export class AuthService {
       name: user.username,
       sub: user._id,
       email: user.email,
-      role: user.role,
     };
 
     // Send login information email
@@ -46,7 +45,6 @@ export class AuthService {
     return {
       access_token: token,
       id: user._id,
-      role: user.role,
     };
   }
 
