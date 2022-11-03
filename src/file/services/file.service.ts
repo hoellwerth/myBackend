@@ -63,6 +63,7 @@ export class FileService {
     if (!file) {
       throw new NotFoundException('Image not found!');
     }
+
     const img = file.buffer.toString('base64');
 
     const data = img.replace(/^data:image\/\w+;base64,/, '');
