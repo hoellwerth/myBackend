@@ -40,14 +40,14 @@ export class RegisterService {
     const user: any = await this.userService.getUserByName(username);
 
     if (user) {
-      throw new ConflictException('user_already_exists');
+      throw new ConflictException('User already exists');
     }
 
     // Check for existing email
     const query: any = await this.userModel.findOne({ email });
 
     if (query) {
-      throw new ConflictException('email_already_exists');
+      throw new ConflictException('Email already exists');
     }
 
     // salt password
@@ -80,6 +80,7 @@ export class RegisterService {
 
     // Create profile
     await this.profileService.createProfile(result.id);
+
     return { success: result.id };
   }
 
