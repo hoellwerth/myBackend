@@ -28,7 +28,7 @@ export class UserController {
     private readonly userService: UserService,
   ) {}
 
-  // POST /register
+  // POST /register (Register a new user)
   @Post('register')
   register(
     @Body('username') username: string,
@@ -38,7 +38,7 @@ export class UserController {
     return this.registerService.register(username, password, email);
   }
 
-  // POST /login
+  // POST /login (Login user)
   @UseGuards(LocalAuthGuard, VerifyGuard)
   @Post('login')
   async login(@Request() req: any): Promise<any> {
@@ -52,18 +52,18 @@ export class UserController {
     };
   }
 
-  // PATCH /edit
+  // PATCH / (Edit user)
   @UseGuards(JwtAuthGuard, UserGuard, VerifyGuard)
-  @Patch('edit')
+  @Patch('')
   edit(
     @Request() req: any,
-    @Body('new_password') new_password: string,
-    @Body('new_username') new_username: string,
+    @Body('new_password') newPassword: string,
+    @Body('new_username') newUsername: string,
   ): any {
-    return this.userService.editUser(req.user.id, new_password, new_username);
+    return this.userService.editUser(req.user.id, newPassword, newUsername);
   }
 
-  // GET /get
+  // GET /get (Get current user
   @UseGuards(JwtAuthGuard, UserGuard, VerifyGuard)
   @Get('get')
   async getUser(@Request() req: any): Promise<any> {
@@ -94,8 +94,8 @@ export class UserController {
   }
   // GET /getuser/:user_id
   @Get('getuser/:user_id')
-  async getUserById(@Param('user_id') user_id: string): Promise<any> {
-    const user = await this.userService.getUserById(user_id);
+  async getUserById(@Param('user_id') userId: string): Promise<any> {
+    const user = await this.userService.getUserById(userId);
 
     return {
       username: user.username,
@@ -106,7 +106,7 @@ export class UserController {
     };
   }
 
-  // DELETE /
+  // DELETE / (Delete current user)
   @UseGuards(JwtAuthGuard, UserGuard, VerifyGuard)
   @Delete('')
   async deleteUser(@Request() req: any) {

@@ -29,6 +29,7 @@ export class FileService {
       userId: authorId,
       buffer: file.buffer,
       filename: file.originalname,
+      createdAt: new Date(),
     });
 
     const result = await newFile.save();
@@ -62,6 +63,7 @@ export class FileService {
     if (!file) {
       throw new NotFoundException('Image not found!');
     }
+
     const img = file.buffer.toString('base64');
 
     const data = img.replace(/^data:image\/\w+;base64,/, '');
@@ -74,12 +76,16 @@ export class FileService {
 
   // Get all files
   async getFiles(authorId: string): Promise<any> {
-    const files = await this.fileModel.find({ userId: authorId });
+    const files: any = await this.fileModel.find({ userId: authorId });
 
     const images = [];
 
     for (const file of files) {
-      images.push((await file).id);
+      images.push({
+        id: (await file).id,
+        filename: (await file).filename,
+        uploaded: (await file).createdAt,
+      });
     }
 
     return images;

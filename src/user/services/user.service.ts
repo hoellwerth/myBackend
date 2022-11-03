@@ -18,7 +18,7 @@ export class UserService {
     const user = await this.userModel.findById(user_id);
 
     if (!user) {
-      throw new NotFoundException('user_not_found');
+      throw new NotFoundException('User not found!');
     }
 
     return user;
@@ -30,13 +30,13 @@ export class UserService {
 
   async getUserByToken(token: string): Promise<any> {
     if (!token) {
-      throw new NotFoundException('user_not_found');
+      throw new NotFoundException('User not found!');
     }
 
     const user = await this.userModel.findOne({ token: token });
 
     if (!user) {
-      throw new NotFoundException('user_not_found');
+      throw new NotFoundException('User not found!');
     }
 
     return user;
@@ -46,7 +46,7 @@ export class UserService {
     const user = await this.userModel.findById(user_id);
 
     if (!user) {
-      throw new NotFoundException('user_not_found');
+      throw new NotFoundException('User not found!');
     }
 
     this.userModel.findByIdAndDelete(user_id);
@@ -64,7 +64,7 @@ export class UserService {
     const user = await this.getUserById(user_id);
 
     if (!user) {
-      throw new NotFoundException('user_not_found');
+      throw new NotFoundException('User not found!');
     }
     // get salt from database
     const salt = await this.getSalt(user._id);
@@ -81,11 +81,10 @@ export class UserService {
     const user = await this.getUserByToken(token);
 
     if (!user) {
-      throw new NotFoundException('user_not_found');
+      throw new NotFoundException('User not found!');
     }
 
-    user.role = 'user';
-    user.token = '';
+    user.token = null;
 
     user.save();
 
@@ -96,7 +95,7 @@ export class UserService {
     const user = await this.userModel.findOne({ email });
 
     if (!user) {
-      throw new NotFoundException('user_not_found');
+      throw new NotFoundException('User not found!');
     }
 
     const token = this.generateId(12);
@@ -110,18 +109,18 @@ export class UserService {
     return { user: user.username };
   }
 
-  async resetPassword(token: string, new_password: string): Promise<any> {
+  async resetPassword(token: string, newPassword: string): Promise<any> {
     const user = await this.getUserByToken(token);
 
     if (!user) {
-      throw new NotFoundException('user_not_found');
+      throw new NotFoundException('User not found!');
     }
 
     // get salt from database
     const salt = await this.getSalt(user._id);
 
-    user.password = this.hash(new_password + salt);
-    user.token = '';
+    user.password = this.hash(newPassword + salt);
+    user.token = null;
 
     user.save();
 
@@ -134,7 +133,7 @@ export class UserService {
     const salt = await this.saltModel.findOne({ userId });
 
     if (!salt) {
-      throw new NotFoundException('salt_not_found');
+      throw new NotFoundException('Salt not found!');
     }
 
     return salt.salt;
@@ -151,7 +150,7 @@ export class UserService {
   generateId(length: number): any {
     let result = '';
     const characters =
-      'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+      'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!"§$%&/()=?`´*+~#-_.:,;<>|';
     const charactersLength = characters.length;
     for (let i = 0; i < length; i++) {
       result += characters.charAt(Math.floor(Math.random() * charactersLength));

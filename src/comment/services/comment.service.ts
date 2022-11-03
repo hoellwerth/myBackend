@@ -16,8 +16,8 @@ export class CommentService {
     private readonly postService: PostService,
   ) {}
 
-  getCommentById(comment_id: string): object {
-    return this.commentModel.findById(comment_id);
+  getCommentById(commentId: string): object {
+    return this.commentModel.findById(commentId);
   }
 
   async createComment(
@@ -75,7 +75,7 @@ export class CommentService {
     const comment: any = await this.getCommentById(commentId);
 
     if (!comment) {
-      throw new NotFoundException('user_not_found');
+      throw new NotFoundException('User not found!');
     }
 
     if (comment.authorId !== userId) {

@@ -9,6 +9,7 @@ import {
   Response,
   Param,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { JwtAuthGuard } from '../../auth/guard/jwt.guard';
 import { UserGuard } from '../../auth/guard/user.guard';
@@ -38,8 +39,10 @@ export class FileController {
   async getImage(
     @Param('imageId') imageId: string,
     @Response() res,
+    @Query('width') width: number,
+    @Query('height') height: number,
   ): Promise<any> {
-    const filename = await this.fileService.getImage(imageId);
+    const filename = await this.fileService.getImage(imageId, width, height);
 
     const image = await createReadStream(
       join(process.cwd(), `src/file/cache/${filename}`),

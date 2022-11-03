@@ -51,22 +51,22 @@ export class PostController {
     return this.postService.createPost(req.user.id, title, content);
   }
 
-  // PATCH /vote (Up/Down-vote)
+  // PUT /:postId (Up/Down-vote)
   @UseGuards(JwtAuthGuard, UserGuard, VerifyGuard)
-  @Patch('vote')
+  @Patch(':postId')
   upvote(
     @Request() req,
     @Body('type') type: boolean,
-    @Body('post_id') post_id: string,
+    @Param('postId') postId: string,
   ): any {
-    return this.voteService.vote(type, post_id, req.user.id);
+    return this.voteService.vote(type, postId, req.user.id);
   }
 
   // PATCH / (Edit Post)
   @UseGuards(JwtAuthGuard, UserGuard, VerifyGuard)
-  @Patch('')
+  @Patch(':postId')
   editPost(
-    @Body('postId') postId,
+    @Param('postId') postId,
     @Body('title') title,
     @Body('content') content,
     @Request() req,

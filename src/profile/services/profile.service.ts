@@ -72,15 +72,20 @@ export class ProfileService {
       throw new NotFoundException('Profile not found!');
     }
 
+    // Check if already followed
     if (profile.following.includes(targetId)) {
       profile.following = profile.following.filter((id) => id !== targetId);
 
       targetProfile.followers = targetProfile.followers.filter(
         (id) => id !== userId,
       );
-      targetProfile.save();
 
-      profile.save();
+      await this.profileModel.updateOne(
+        { userId: targetId },
+        { followers: targetProfile.followers },
+      );
+
+      await profile.save();
       return { success: true };
     }
 
@@ -135,8 +140,13 @@ export class ProfileService {
     const profile = await this.getProfile(userId);
 
     if (!profile) {
-      throw new NotFoundException('Image not found!');
+      throw new NotFoundException('User not found!');
     }
+
+    if (!profile.buffer) {
+      throw new NotFoundException('Image not Found!');
+    }
+
     const img = profile.buffer.toString('base64');
 
     const data = img.replace(/^data:image\/\w+;base64,/, '');
