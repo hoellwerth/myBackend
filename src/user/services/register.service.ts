@@ -61,9 +61,8 @@ export class RegisterService {
       username: username,
       email: email,
       password: hashedPassword,
-      authority: 3,
-      permissions: ['create_post', 'delete_own_post', 'vote'],
-      role: this.generateId(12),
+      role: 'user',
+      token: this.generateId(12),
     });
 
     const result = await newUser.save();
@@ -101,7 +100,7 @@ export class RegisterService {
   generateId(length: number): any {
     let result = '';
     const characters =
-      'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+      'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!"§$%&/()=?`´*+~#-_.:,;<>|';
     const charactersLength = characters.length;
     for (let i = 0; i < length; i++) {
       result += characters.charAt(Math.floor(Math.random() * charactersLength));
