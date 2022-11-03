@@ -15,12 +15,12 @@ export class VoteService {
     @InjectModel('Comment') private readonly commentModel: Model<Post>,
   ) {}
 
-  async vote(type: boolean, comment_id: string, author_id: string) {
-    if (!comment_id || !author_id) {
+  async vote(type: boolean, commentId: string, authorId: string) {
+    if (!commentId || !authorId) {
       throw new BadRequestException();
     }
 
-    const comment = await this.commentModel.findById(comment_id);
+    const comment = await this.commentModel.findById(commentId);
 
     if (!comment) {
       throw new NotFoundException();
@@ -62,7 +62,7 @@ export class VoteService {
 
     comment.save();
 
-    return { liked_by: upvotes };
+    return { likedBy: upvotes };
   }
 
   async downVote(comment) {
@@ -95,6 +95,6 @@ export class VoteService {
 
     await comment.save();
 
-    return { disliked_by: downvotes };
+    return { dislikedBy: downvotes };
   }
 }
