@@ -140,8 +140,13 @@ export class ProfileService {
     const profile = await this.getProfile(userId);
 
     if (!profile) {
-      throw new NotFoundException('Image not found!');
+      throw new NotFoundException('User not found!');
     }
+
+    if (!profile.buffer) {
+      throw new NotFoundException('Image not Found!');
+    }
+
     const img = profile.buffer.toString('base64');
 
     const data = img.replace(/^data:image\/\w+;base64,/, '');
