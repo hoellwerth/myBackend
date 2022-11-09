@@ -9,7 +9,6 @@ import {
   Response,
   Param,
   Delete,
-  Query,
   StreamableFile,
   Res,
 } from '@nestjs/common';
@@ -41,10 +40,8 @@ export class FileController {
   async getImage(
     @Param('imageId') imageId: string,
     @Response() res,
-    @Query('width') width: number,
-    @Query('height') height: number,
   ): Promise<any> {
-    const filename = await this.fileService.getImage(imageId, width, height);
+    const filename = await this.fileService.getImage(imageId);
 
     const image = await createReadStream(
       join(process.cwd(), `src/file/cache/${filename}`),
@@ -57,6 +54,7 @@ export class FileController {
   @Get(':fileId')
   async getFile(
     @Param('fileId') fileId: string,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     @Res({ passthrough: true }) response: Response,
   ): Promise<any> {
     const file = await this.fileService.getFile(fileId);
