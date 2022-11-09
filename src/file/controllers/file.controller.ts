@@ -9,7 +9,8 @@ import {
   Response,
   Param,
   Delete,
-  Query,
+  StreamableFile,
+  Res,
 } from '@nestjs/common';
 import { JwtAuthGuard } from '../../auth/guard/jwt.guard';
 import { UserGuard } from '../../auth/guard/user.guard';
@@ -35,20 +36,30 @@ export class FileController {
   }
 
   // GET /image/:imageId (Get an image)
-  @Get(':imageId')
+  @Get('image/:imageId')
   async getImage(
     @Param('imageId') imageId: string,
     @Response() res,
-    @Query('width') width: number,
-    @Query('height') height: number,
   ): Promise<any> {
-    const filename = await this.fileService.getImage(imageId, width, height);
+    const filename = await this.fileService.getImage(imageId);
 
     const image = await createReadStream(
       join(process.cwd(), `src/file/cache/${filename}`),
     );
 
     await image.pipe(res);
+  }
+
+  // GET /:fileId (Get a file)
+  @Get(':fileId')
+  async getFile(
+    @Param('fileId') fileId: string,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    @Res({ passthrough: true }) response: Response,
+  ): Promise<any> {
+    const file = await this.fileService.getFile(fileId);
+
+    return new StreamableFile(file);
   }
 
   // GET / (Get all file-ids)

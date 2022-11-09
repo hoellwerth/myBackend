@@ -14,13 +14,15 @@ import * as path from 'path';
 export class FileService {
   constructor(@InjectModel('File') private readonly fileModel: Model<File>) {}
 
+  directory = 'src/file/cache';
+
   // Upload a file
   async uploadFile(file: Express.Multer.File, authorId: string): Promise<any> {
     if (!file) {
       throw new BadRequestException('No image uploaded!');
     }
 
-    const Mb = 16_000_000;
+    const Mb = 1_000_000;
     if (file.size > 16 * Mb) {
       throw new BadRequestException('File too large!');
     }
@@ -37,39 +39,58 @@ export class FileService {
     return { new: result.id };
   }
 
+  private clearCache() {
+    // Clear current cache
+
+    fs.readdir(this.directory, (err, files) => {
+      if (err) return err;
+
+      for (const file of files) {
+        fs.unlink(path.join(this.directory, file), (err) => {
+          if (err) return err;
+        });
+      }
+    });
+  }
+
+  getBuffer(file: any): Buffer {
+    const bufferString = file.buffer.toString('base64');
+    const data = bufferString.replace(/^data:image\/\w+;base64,/, '');
+
+    return Buffer.from(data, 'base64');
+  }
+
   // Get a file
   async getFile(fileId: string): Promise<any> {
-    return this.fileModel.findById(fileId);
+    // clear cache
+    this.clearCache();
+
+    const file: any = await this.fileModel.findById(fileId);
+
+    if (!file) {
+      throw new NotFoundException('File not found!');
+    }
+
+    return this.getBuffer(file);
   }
 
   // Get an image
   async getImage(pictureId: string): Promise<any> {
-    // Clear current cache
-    const directory = 'src/file/cache';
-
-    fs.readdir(directory, (err, files) => {
-      if (err) throw err;
-
-      for (const file of files) {
-        fs.unlink(path.join(directory, file), (err) => {
-          if (err) throw err;
-        });
-      }
-    });
+    // clear cache
+    this.clearCache();
 
     // Get image from database
-    const file = await this.getFile(pictureId);
+    const file: any = await this.fileModel.findById(pictureId);
 
     if (!file) {
       throw new NotFoundException('Image not found!');
     }
 
-    const img = file.buffer.toString('base64');
+    const buf = this.getBuffer(file);
 
-    const data = img.replace(/^data:image\/\w+;base64,/, '');
-    const buf = Buffer.from(data, 'base64');
+    fs.writeFileSync(`./${this.directory}/${file.filename}`, buf);
 
-    fs.writeFileSync(`./${directory}/${file.filename}`, buf);
+    fs.writeFileSync(`./${this.directory}/${file.filename}`, buf);
 
     return file.filename;
   }
