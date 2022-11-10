@@ -9,7 +9,6 @@ import { File } from '../models/file.model';
 import { Model } from 'mongoose';
 import * as fs from 'fs';
 import * as path from 'path';
-import sharp from 'sharp';
 
 @Injectable()
 export class FileService {
@@ -76,11 +75,7 @@ export class FileService {
   }
 
   // Get an image
-  async getImage(
-    pictureId: string,
-    width: number,
-    height: number,
-  ): Promise<any> {
+  async getImage(pictureId: string): Promise<any> {
     // clear cache
     this.clearCache();
 
@@ -95,7 +90,7 @@ export class FileService {
 
     fs.writeFileSync(`./${this.directory}/${file.filename}`, buf);
 
-    fs.writeFileSync(`./${directory}/${file.filename}`, buf);
+    fs.writeFileSync(`./${this.directory}/${file.filename}`, buf);
 
     return file.filename;
   }
