@@ -11,7 +11,7 @@ import {
   Get,
   Res,
 } from '@nestjs/common';
-import { Throttle, ThrottlerGuard } from '@nestjs/throttler';
+import { ThrottlerGuard } from '@nestjs/throttler';
 import { ProfileService } from '../services/profile.service';
 import { JwtAuthGuard } from '../../auth/guard/jwt.guard';
 import { UserGuard } from '../../auth/guard/user.guard';
@@ -22,7 +22,6 @@ import { Response } from 'express';
 import { createReadStream } from 'fs';
 import { join } from 'path';
 
-@Throttle()
 @UseGuards(ThrottlerGuard)
 @Controller('profile')
 export class ProfileController {

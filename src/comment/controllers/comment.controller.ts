@@ -10,14 +10,13 @@ import {
   Delete,
   Put,
 } from '@nestjs/common';
-import { Throttle, ThrottlerGuard } from '@nestjs/throttler';
+import { SkipThrottle, ThrottlerGuard } from '@nestjs/throttler';
 import { CommentService } from '../services/comment.service';
 import { JwtAuthGuard } from '../../auth/guard/jwt.guard';
 import { UserGuard } from '../../auth/guard/user.guard';
 import { VerifyGuard } from '../../auth/guard/verify.guard';
 import { VoteService } from '../services/vote.service';
 
-@Throttle()
 @UseGuards(ThrottlerGuard)
 @Controller('comment')
 export class CommentController {
@@ -27,6 +26,7 @@ export class CommentController {
   ) {}
 
   // GET /:comment_id  (Get a specific comment)
+  @SkipThrottle()
   @Get(':comment_id')
   getComment(@Param('comment_id') comment_id: string): any {
     return this.commentService.getCommentById(comment_id);
