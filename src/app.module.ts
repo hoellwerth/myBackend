@@ -16,8 +16,8 @@ dotenv.config({ path: 'src/environment/dev.env' });
   imports: [
     MongooseModule.forRoot(process.env.DB_URL, { dbName: process.env.DB_NAME }),
     ThrottlerModule.forRoot({
-      ttl: 60,
-      limit: 100,
+      ttl: 3,
+      limit: 2000,
     }),
     UserModule,
     AuthModule,
