@@ -69,18 +69,18 @@ export class CommentController {
   // DELETE /:comment_id  (Delete Comment)
   @UseGuards(JwtAuthGuard, UserGuard, VerifyGuard)
   @Delete(':comment_id')
-  deleteComment(@Request() req, @Param('comment_id') comment_id: string): any {
-    return this.commentService.deleteComment(req.user.id, comment_id);
+  deleteComment(@Request() req, @Param('commentId') commentId: string): any {
+    return this.commentService.deleteComment(req.user.id, commentId);
   }
 
   // PUT /:postId (Vote for Comments)
   @UseGuards(JwtAuthGuard, UserGuard, VerifyGuard)
-  @Put(':postId')
+  @Put(':commentId')
   vote(
     @Request() req,
-    @Param('postId') postId: string,
+    @Param('commentId') commentId: string,
     @Body('type') type: boolean,
   ): any {
-    return this.voteService.vote(type, postId, req.user.id);
+    return this.voteService.vote(type, commentId, req.user.id);
   }
 }

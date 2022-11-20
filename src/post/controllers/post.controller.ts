@@ -6,6 +6,7 @@ import {
   Param,
   Patch,
   Post,
+  Put,
   Request,
   UseGuards,
 } from '@nestjs/common';
@@ -52,12 +53,13 @@ export class PostController {
 
   // PUT /:postId (Up/Down-vote)
   @UseGuards(JwtAuthGuard, UserGuard, VerifyGuard)
-  @Patch(':postId')
+  @Put(':postId')
   upvote(
     @Request() req,
     @Body('type') type: boolean,
     @Param('postId') postId: string,
   ): any {
+    console.log(postId);
     return this.voteService.vote(type, postId, req.user.id);
   }
 
