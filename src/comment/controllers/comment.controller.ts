@@ -10,14 +10,13 @@ import {
   Delete,
   Put,
 } from '@nestjs/common';
-import { Throttle, ThrottlerGuard } from '@nestjs/throttler';
+import { SkipThrottle, ThrottlerGuard } from '@nestjs/throttler';
 import { CommentService } from '../services/comment.service';
 import { JwtAuthGuard } from '../../auth/guard/jwt.guard';
 import { UserGuard } from '../../auth/guard/user.guard';
 import { VerifyGuard } from '../../auth/guard/verify.guard';
 import { VoteService } from '../services/vote.service';
 
-@Throttle()
 @UseGuards(ThrottlerGuard)
 @Controller('comment')
 export class CommentController {
@@ -27,6 +26,7 @@ export class CommentController {
   ) {}
 
   // GET /:comment_id  (Get a specific comment)
+  @SkipThrottle()
   @Get(':comment_id')
   getComment(@Param('comment_id') comment_id: string): any {
     return this.commentService.getCommentById(comment_id);
@@ -69,18 +69,18 @@ export class CommentController {
   // DELETE /:comment_id  (Delete Comment)
   @UseGuards(JwtAuthGuard, UserGuard, VerifyGuard)
   @Delete(':comment_id')
-  deleteComment(@Request() req, @Param('comment_id') comment_id: string): any {
-    return this.commentService.deleteComment(req.user.id, comment_id);
+  deleteComment(@Request() req, @Param('commentId') commentId: string): any {
+    return this.commentService.deleteComment(req.user.id, commentId);
   }
 
   // PUT /:postId (Vote for Comments)
   @UseGuards(JwtAuthGuard, UserGuard, VerifyGuard)
-  @Put(':postId')
+  @Put(':commentId')
   vote(
     @Request() req,
-    @Param('postId') postId: string,
+    @Param('commentId') commentId: string,
     @Body('type') type: boolean,
   ): any {
-    return this.voteService.vote(type, postId, req.user.id);
+    return this.voteService.vote(type, commentId, req.user.id);
   }
 }

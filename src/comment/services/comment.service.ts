@@ -24,7 +24,7 @@ export class CommentService {
     id: string,
     title: string,
     content: string,
-    parent,
+    parentId,
   ): Promise<object> {
     const newComment = new this.commentModel({
       title: title,
@@ -34,21 +34,28 @@ export class CommentService {
       dislikedBy: [],
       created: new Date(),
       updated: null,
-      parent: parent,
+      parent: parentId,
     });
 
     const comment = await newComment.save();
 
     // Edit comment array in parent post
-    const post = await this.postService.getPostById(parent);
+    let parent = await this.postService.getPostById(parentId);
 
-    const comments = post.comments;
+    if (!parent) {
+      parent = await this.getCommentById(parentId);
+      if (!parent) {
+        throw new NotFoundException('Parent not found!');
+      }
+    }
 
-    comments.push(comment._id.toString());
+    const commentIds = parent.comments;
 
-    post.comments = comments;
+    commentIds.push(comment._id.toString());
 
-    post.save();
+    parent.comments = commentIds;
+
+    parent.save();
     return comment;
   }
 

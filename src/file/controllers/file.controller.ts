@@ -19,7 +19,9 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { FileService } from '../services/file.service';
 import { createReadStream } from 'fs';
 import { join } from 'path';
+import { ThrottlerGuard } from '@nestjs/throttler';
 
+@UseGuards(ThrottlerGuard)
 @Controller('file')
 export class FileController {
   constructor(private readonly fileService: FileService) {}

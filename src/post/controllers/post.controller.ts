@@ -6,6 +6,7 @@ import {
   Param,
   Patch,
   Post,
+  Put,
   Request,
   UseGuards,
 } from '@nestjs/common';
@@ -13,11 +14,10 @@ import { JwtAuthGuard } from '../../auth/guard/jwt.guard';
 import { VoteService } from '../services/vote.service';
 import { UserGuard } from '../../auth/guard/user.guard';
 import { PostService } from '../services/post.service';
-import { SkipThrottle, Throttle, ThrottlerGuard } from '@nestjs/throttler';
+import { SkipThrottle, ThrottlerGuard } from '@nestjs/throttler';
 import { VerifyGuard } from '../../auth/guard/verify.guard';
 import { AdminGuard } from '../../auth/guard/admin.guard';
 
-@Throttle()
 @UseGuards(ThrottlerGuard)
 @Controller('post')
 export class PostController {
@@ -53,12 +53,13 @@ export class PostController {
 
   // PUT /:postId (Up/Down-vote)
   @UseGuards(JwtAuthGuard, UserGuard, VerifyGuard)
-  @Patch(':postId')
+  @Put(':postId')
   upvote(
     @Request() req,
     @Body('type') type: boolean,
     @Param('postId') postId: string,
   ): any {
+    console.log(postId);
     return this.voteService.vote(type, postId, req.user.id);
   }
 
