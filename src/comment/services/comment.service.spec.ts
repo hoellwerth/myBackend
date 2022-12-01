@@ -7,7 +7,7 @@ import { Post } from '../../post/models/post.model';
 import {
   mockPost,
   PostServiceMock,
-} from '../../post/services/vote.service.spec';
+} from '../../post/services/post.service.spec';
 
 export class CommentModel {
   constructor(private data) {}
