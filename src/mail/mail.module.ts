@@ -13,7 +13,7 @@ dotenv.config({
   imports: [
     MailerModule.forRoot({
       transport: {
-        host: '192.168.0.15',
+        host: '192.168.0.13',
         port: 8025,
         secure: false,
         auth: {

@@ -9,6 +9,8 @@ import {
   Response,
   Param,
   Delete,
+  StreamableFile,
+  Res,
 } from '@nestjs/common';
 import { JwtAuthGuard } from '../../auth/guard/jwt.guard';
 import { UserGuard } from '../../auth/guard/user.guard';
@@ -17,7 +19,9 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { FileService } from '../services/file.service';
 import { createReadStream } from 'fs';
 import { join } from 'path';
+import { ThrottlerGuard } from '@nestjs/throttler';
 
+@UseGuards(ThrottlerGuard)
 @Controller('file')
 export class FileController {
   constructor(private readonly fileService: FileService) {}
@@ -34,7 +38,7 @@ export class FileController {
   }
 
   // GET /image/:imageId (Get an image)
-  @Get(':imageId')
+  @Get('image/:imageId')
   async getImage(
     @Param('imageId') imageId: string,
     @Response() res,
@@ -46,6 +50,18 @@ export class FileController {
     );
 
     await image.pipe(res);
+  }
+
+  // GET /:fileId (Get a file)
+  @Get(':fileId')
+  async getFile(
+    @Param('fileId') fileId: string,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    @Res({ passthrough: true }) response: Response,
+  ): Promise<any> {
+    const file = await this.fileService.getFile(fileId);
+
+    return new StreamableFile(file);
   }
 
   // GET / (Get all file-ids)

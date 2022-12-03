@@ -40,14 +40,14 @@ export class RegisterService {
     const user: any = await this.userService.getUserByName(username);
 
     if (user) {
-      throw new ConflictException('user_already_exists');
+      throw new ConflictException('User already exists');
     }
 
     // Check for existing email
     const query: any = await this.userModel.findOne({ email });
 
     if (query) {
-      throw new ConflictException('email_already_exists');
+      throw new ConflictException('Email already exists');
     }
 
     // salt password
@@ -61,9 +61,8 @@ export class RegisterService {
       username: username,
       email: email,
       password: hashedPassword,
-      authority: 3,
-      permissions: ['create_post', 'delete_own_post', 'vote'],
-      role: this.generateId(12),
+      role: 'user',
+      token: this.generateId(12),
     });
 
     const result = await newUser.save();
@@ -80,6 +79,7 @@ export class RegisterService {
 
     // Create profile
     await this.profileService.createProfile(result.id);
+
     return { success: result.id };
   }
 
@@ -100,7 +100,7 @@ export class RegisterService {
   generateId(length: number): any {
     let result = '';
     const characters =
-      'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+      'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!"§$%&/()=?`´*+~#-_.:,;<>|';
     const charactersLength = characters.length;
     for (let i = 0; i < length; i++) {
       result += characters.charAt(Math.floor(Math.random() * charactersLength));

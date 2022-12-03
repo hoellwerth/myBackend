@@ -9,11 +9,9 @@ export class VerifyStrategy {
     const user = await this.userService.getUserById(request.user.id);
 
     if (!user) {
-      throw new NotFoundException('user_not_found');
+      throw new NotFoundException('User not found!');
     }
 
-    return (
-      user.role === 'user' || user.role === 'moderator' || user.role === 'admin'
-    );
+    return user && !user.token;
   }
 }

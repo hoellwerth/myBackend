@@ -21,8 +21,8 @@ export class PostService {
     return this.postModel.find();
   }
 
-  async getPostById(post_id: string): Promise<any> {
-    return this.postModel.findById(post_id);
+  async getPostById(postId: string): Promise<any> {
+    return this.postModel.findById(postId);
   }
 
   async createPost(
@@ -31,15 +31,15 @@ export class PostService {
     content: string,
   ): Promise<Return> {
     if (!id || !title || !content) {
-      throw new BadRequestException('Wrong Body');
+      throw new BadRequestException('Wrong Body!');
     }
 
-    if (id.length !== 24 || title.length > 24) {
-      throw new BadRequestException('title_too_long');
+    if (id.length !== 24 || title.length > 32) {
+      throw new BadRequestException('Title too long!');
     }
 
     if (content.length > 32768) {
-      throw new BadRequestException('content_too_long');
+      throw new BadRequestException('Content too long!');
     }
 
     const newPost = new this.postModel({
@@ -57,12 +57,12 @@ export class PostService {
 
     posts = await this.postModel.find({ title: newPost.title });
     if (posts[0]) {
-      throw new ConflictException('title_already_exists');
+      throw new ConflictException('Title already Exists!');
     }
 
     posts = await this.postModel.find({ content: newPost.content });
     if (posts[0]) {
-      throw new ConflictException('content_already_exists');
+      throw new ConflictException('Content already Exists!');
     }
 
     const result = await newPost.save();
@@ -70,16 +70,16 @@ export class PostService {
     return { success: result.id };
   }
 
-  async deletePost(post_id: string, authorId: string): Promise<any> {
-    if (!post_id || !authorId) {
+  async deletePost(postId: string, authorId: string): Promise<any> {
+    if (!postId || !authorId) {
       throw new BadRequestException('Wrong Body');
     }
 
-    if (post_id.length !== 24 || authorId.length > 24) {
+    if (postId.length !== 24 || authorId.length > 24) {
       throw new BadRequestException('Body too long');
     }
 
-    const post = await this.getPostById(post_id);
+    const post = await this.getPostById(postId);
     if (!post) {
       throw new NotFoundException();
     }
@@ -88,23 +88,23 @@ export class PostService {
       throw new UnauthorizedException();
     }
 
-    const result = await this.postModel.findByIdAndDelete(post_id);
+    const result = await this.postModel.findByIdAndDelete(postId);
     return { success: result };
   }
 
   async editPost(
-    post_id: string,
+    postId: string,
     authorId: string,
     title: string,
     content: string,
     comments: string[] | null,
   ): Promise<any> {
-    if (!post_id || !authorId || !title || !content) {
+    if (!postId || !authorId || !title || !content) {
       throw new BadRequestException('Wrong Body');
     }
 
     if (
-      post_id.length !== 24 ||
+      postId.length !== 24 ||
       authorId.length !== 24 ||
       title.length > 24 ||
       content.length > 32768
@@ -112,7 +112,7 @@ export class PostService {
       throw new BadRequestException('Body too long');
     }
 
-    const post = await this.getPostById(post_id);
+    const post = await this.getPostById(postId);
 
     if (!post) {
       throw new NotFoundException('Post not found!');

@@ -39,10 +39,10 @@ export class UserController {
   @Patch('')
   edit(
     @Request() req: any,
-    @Body('new_password') new_password: string,
-    @Body('new_username') new_username: string,
+    @Body('new_password') newPassword: string,
+    @Body('new_username') newUsername: string,
   ): any {
-    return this.userService.editUser(req.user.id, new_password, new_username);
+    return this.userService.editUser(req.user.id, newPassword, newUsername);
   }
 
   // GET /get (Get current user
@@ -76,8 +76,8 @@ export class UserController {
   }
   // GET /getuser/:user_id
   @Get('getuser/:user_id')
-  async getUserById(@Param('user_id') user_id: string): Promise<any> {
-    const user = await this.userService.getUserById(user_id);
+  async getUserById(@Param('user_id') userId: string): Promise<any> {
+    const user = await this.userService.getUserById(userId);
 
     return {
       username: user.username,
