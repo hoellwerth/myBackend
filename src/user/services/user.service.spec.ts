@@ -10,16 +10,12 @@ export const mockUser = (
   username = 'Test',
   email = 'test@test.eu',
   password = 'Test12345678',
-  authority = 0,
-  permissions: string[] = ['test'],
   role = 'user',
   token: string | null = null,
 ): User => ({
   username,
   email,
   password,
-  authority,
-  permissions,
   role,
   token,
 });
