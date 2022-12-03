@@ -3,25 +3,7 @@ import { AuthService } from './auth.service';
 import { UserService } from '../../user/services/user.service';
 import { JwtService } from '@nestjs/jwt';
 import { MailService } from '../../mail/services/mail.service';
-import { User } from '../../user/models/user.model';
-
-const mockUser = (
-  username = 'Test',
-  email = 'test@test.eu',
-  password = 'Test12345678',
-  authority = 0,
-  permissions: string[] = ['test'],
-  role = 'user',
-  token: string | null = null,
-): User => ({
-  username,
-  email,
-  password,
-  authority,
-  permissions,
-  role,
-  token,
-});
+import { mockUser } from '../../user/services/user.service.spec';
 
 describe('AuthService', () => {
   let service: AuthService;

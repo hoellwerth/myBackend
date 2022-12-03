@@ -6,7 +6,7 @@ import { Model } from 'mongoose';
 import { User } from '../models/user.model';
 import { Salt } from '../models/salt.model';
 
-const mockUser = (
+export const mockUser = (
   username = 'Test',
   email = 'test@test.eu',
   password = 'Test12345678',
