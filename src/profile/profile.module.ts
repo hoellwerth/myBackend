@@ -8,7 +8,7 @@ import { AuthModule } from '../auth/auth.module';
 
 @Module({
   imports: [
-    AuthModule,
+    forwardRef(() => AuthModule),
     forwardRef(() => UserModule),
     MongooseModule.forFeature([{ name: 'Profile', schema: ProfileSchema }]),
   ],

@@ -52,7 +52,7 @@ export class ProfileController {
   // PATCH /:userId (Edit the user's profile)
   @UseGuards(JwtAuthGuard, UserGuard, VerifyGuard)
   @Patch(':userId')
-  editStatus(
+  editProfile(
     @Param('userId') userId: string,
     @Body('status') status: string,
     @Body('bio') bio: string,
@@ -64,7 +64,7 @@ export class ProfileController {
   @UseGuards(JwtAuthGuard, UserGuard, VerifyGuard)
   @Post('picture')
   @UseInterceptors(FileInterceptor('profile-picture'))
-  uploadFile(
+  uploadPicture(
     @UploadedFile(SharpPipe) file: any,
     @Request() req: any,
   ): Promise<any> {

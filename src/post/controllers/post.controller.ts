@@ -54,12 +54,11 @@ export class PostController {
   // PUT /:postId (Up/Down-vote)
   @UseGuards(JwtAuthGuard, UserGuard, VerifyGuard)
   @Put(':postId')
-  upvote(
+  vote(
     @Request() req,
     @Body('type') type: boolean,
     @Param('postId') postId: string,
   ): any {
-    console.log(postId);
     return this.voteService.vote(type, postId, req.user.id);
   }
 

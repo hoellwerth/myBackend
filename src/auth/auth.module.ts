@@ -9,6 +9,7 @@ import { UserStrategy } from './strategy/user.strategy';
 import { VerifyStrategy } from './strategy/verify.strategy';
 import { AdminStrategy } from './strategy/admin.strategy';
 import { MailModule } from '../mail/mail.module';
+import { AuthController } from './controllers/auth.controller';
 import * as dotenv from 'dotenv';
 
 dotenv.config({
@@ -41,5 +42,6 @@ dotenv.config({
     VerifyStrategy,
     AdminStrategy,
   ],
+  controllers: [AuthController],
 })
 export class AuthModule {}

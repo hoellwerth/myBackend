@@ -119,7 +119,6 @@ export class CommentService {
 
     const post: any = await this.postService.getPostById(comment.parent);
 
-    console.log(post);
     const comments = post.comments;
 
     for (const i in comments) {
