@@ -34,14 +34,18 @@ export class AuthService {
       name: user.username,
       sub: user._id,
       email: user.email,
-      role: user.role,
     };
 
     // Send login information email
     await this.mailService.sendUserInformation(user);
 
     // Sign JsonWebToken
-    return this.jwtService.sign(payload);
+    const token = this.jwtService.sign(payload);
+
+    return {
+      access_token: token,
+      id: user._id,
+    };
   }
 
   hash(password) {

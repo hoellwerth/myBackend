@@ -22,4 +22,5 @@ export interface Post {
   updated: Date | null;
   comments: string[] | null;
   parent: string;
+  _id: string | null;
 }
