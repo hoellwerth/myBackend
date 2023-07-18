@@ -35,7 +35,7 @@
     "dotenv": "^16.0.3",
     "ejs": "^3.1.8",
     "handlebars": "^4.7.7",
-    "mongoose": "^6.6.5",
+    "mongoose": "^6.11.3",
     "nodemailer": "^6.8.0",
     "passport": "^0.6.0",
     "passport-jwt": "^4.0.1",
